@@ -1,0 +1,4 @@
+---
+datadir: /etc/varstack/stack
+stack:
+    - defaults

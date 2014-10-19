@@ -1,0 +1,35 @@
+#!/usr/bin/python2
+
+import varstack, yaml, argparse, logging
+from pprint import pprint
+
+def validateVar(var):
+    data = var.split('=', 1)
+    if len(data) != 2:
+        raise argparse.ArgumentTypeError("Variable definitions must have the form key=value")
+    return {'key':data[0], 'value':data[1]}
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Varstack command line tool.')
+    parser.add_argument('--debug', dest='debug', action='store_true')
+    parser.add_argument('--config', type=str, default='/etc/varstack.yaml',
+                        help='configuration filename')
+    parser.add_argument('variables', nargs=argparse.REMAINDER, type=validateVar,
+                        metavar='key=value',
+                        help='any number of variable assignments in the form of "key=value"')
+    args = parser.parse_args()
+
+    if args.debug:
+        loglevel = logging.DEBUG
+    else:
+        loglevel = logging.WARNING
+    log = logging.basicConfig(level=loglevel)
+
+    vardata = {}
+    for entry in args.variables:
+        vardata[entry['key']] = entry['value']
+
+    vs = varstack.Varstack(config_filename=args.config)
+    res = vs.evaluate(vardata)
+    print '---'
+    print yaml.dump(res)
