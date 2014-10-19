@@ -25,7 +25,13 @@ class Varstack:
 
     """Evaluate a stack of configuration files."""
     def evaluate(self, variables):
-        config = yaml.safe_load(open(self.config_filename))
+        try:
+            cfh = open(self.config_filename, 'r')
+        except (OSError, IOError) as e:
+            self.log.error('Unable to load configuration file "{0}"'.format(self.config_filename))
+            return {}
+        config = yaml.safe_load(cfh)
+        cfh.close()
         for path in config['stack']:
             fullpath = self.__substitutePathVariables(config['datadir']+'/'+path+'.yaml', variables)
             if not fullpath:
