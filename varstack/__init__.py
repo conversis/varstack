@@ -33,30 +33,38 @@ class Varstack:
         config = yaml.safe_load(cfh)
         cfh.close()
         for path in config['stack']:
-            fullpath = self.__substitutePathVariables(config['datadir']+'/'+path+'.yaml', variables)
-            if not fullpath:
+            fullpaths = self.__substitutePathVariables(config['datadir']+'/'+path+'.yaml', variables)
+            if not fullpaths:
                 continue
-            try:
-                fh = open(fullpath, 'r')
-            except (OSError, IOError) as e:
-                self.log.info('file "{0}" not found, skipping'.format(fullpath))
-                continue
-            self.log.info('found file "{0}", merging'.format(fullpath))
-            self.__loadFile(fh)
-            fh.close()
+            for fullpath in fullpaths:
+                try:
+                    fh = open(fullpath, 'r')
+                except (OSError, IOError) as e:
+                    self.log.info('file "{0}" not found, skipping'.format(fullpath))
+                    continue
+                self.log.info('found file "{0}", merging'.format(fullpath))
+                self.__loadFile(fh)
+                fh.close()
         rawdata = self.data
         return self.__cleanupData(rawdata)
 
     """Replace variables in a path with their respective values."""
     def __substitutePathVariables(self, path, variables):
-        new_path = path
+        new_paths = [path]
         tags = self.__extractVarNames(path)
         for tag in tags:
             if tag not in variables:
-                self.log.warning('Unknown variable "{0}" in path "{1}", skipping'.format(tag, new_path))
+                self.log.warning('Unknown variable "{0}" in path "{1}", skipping'.format(tag, path))
                 return False
-            new_path = re.sub('%\{'+tag+'\}', variables[tag], new_path)
-        return new_path
+            multi = []
+            for idx, value in enumerate(new_paths):
+                if type(variables[tag]) is list:
+                    for entry in variables[tag]:
+                       multi.append(re.sub('%\{'+tag+'\}', entry, new_paths[idx]))
+                else:
+                    multi.append(re.sub('%\{'+tag+'\}', variables[tag], new_paths[idx]))
+            new_paths = multi
+        return new_paths
 
     """Extract a list of variable names present in a string."""
     def __extractVarNames(self, string):
