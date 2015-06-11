@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 version = '0.4'
 
-install_requires = ['setuptools']
+install_requires = ['setuptools', 'PyYAML']
 if sys.version_info < (2, 7):
     install_requires.append('simplejson')
     install_requires.append('argparse')
