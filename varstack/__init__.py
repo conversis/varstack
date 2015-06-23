@@ -99,6 +99,9 @@ class Varstack:
 
     """Merge two configuration sets."""
     def __mergeData(self, old, new, combine, keyname):
+        for key in new:
+            new[key] = self.__check_enc(new[key])
+
         if type(old) != type(new):
             self.log.error('key "{0}": previous type is {1} but new type is {2}.'.format(keyname, type(old).__name__, type(new).__name__))
             return False
@@ -137,3 +140,22 @@ class Varstack:
                 return old+new
         else:
             return new
+
+    def __check_enc(self, value):
+        if '---BEGIN PGP MESSAGE---' in value:
+            value = self.__decrypt_value(value)
+        return value
+    
+    def __decrypt_value(self, encrypted_string):
+        GNUPGHOME = 'test/tmp'
+
+        import gnupg
+        gpg = gnupg.GPG(gnupghome=GNUPGHOME)
+        gpg.encoding = 'utf-8'
+
+        decrypted_string =  gpg.decrypt(encrypted_string)
+        return yaml.safe_load(decrypted_string.data)
+
+
+
+
