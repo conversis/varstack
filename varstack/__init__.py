@@ -5,7 +5,7 @@ Varstack - A system to create stacked configuration structures
 
 __all__ = [ "Varstack" ]
 
-import logging, re, yaml
+import logging, re, yaml, os
 from pprint import pprint
 
 try:
@@ -22,6 +22,7 @@ class Varstack:
         self.log = logging.getLogger(__name__)
         self.log.addHandler(NullHandler())
         self.data = {}
+        self.config = {'gnupghome':''}
 
     """Evaluate a stack of configuration files."""
     def evaluate(self, variables):
@@ -30,10 +31,10 @@ class Varstack:
         except (OSError, IOError) as e:
             self.log.error('Unable to load configuration file "{0}"'.format(self.config_filename))
             return {}
-        config = yaml.safe_load(cfh)
+        self.config.update(yaml.safe_load(cfh))
         cfh.close()
-        for path in config['stack']:
-            fullpaths = self.__substitutePathVariables(config['datadir']+'/'+path+'.yaml', variables)
+        for path in self.config['stack']:
+            fullpaths = self.__substitutePathVariables(self.config['datadir']+'/'+path+'.yaml', variables)
             if not fullpaths:
                 continue
             for fullpath in fullpaths:
@@ -141,13 +142,33 @@ class Varstack:
         else:
             return new
 
+    """Check if a value is encrypted"""
     def __check_enc(self, value):
-        if '---BEGIN PGP MESSAGE---' in value:
+        pgp_string = '---BEGIN PGP MESSAGE---'
+        if value.index(pgp_string) == 0:
             value = self.__decrypt_value(value)
         return value
-    
+
+    GNUPGHOME = ''
+
+    """Initialize the directory of the gnupg keys for the gnupg modul"""
+    def __init_gnupghome(self):
+        if self.config['gnupghome']:
+            GNUPGHOME = self.config['gnupghome']
+        elif os.path.dirname('~/.gpg'):
+            GNUPGHOME = '~/.gpg'
+        elif os.path.dirname('~/.gnupg'):
+            GNUPGHOME = '~/.gnupg'
+        else:
+            self.log.warning('no gnupghome, can not decrypt values')
+        return
+
+    """Try to dectryp an encrypted value"""
     def __decrypt_value(self, encrypted_string):
-        GNUPGHOME = 'test/tmp'
+        if not GNUPGHOME:
+            self.__init_gnupghome()
+        if not GNUPGHOME: #if init GNUPGHOME gives no result, decryption is not possible
+            return encrypted_string
 
         import gnupg
         gpg = gnupg.GPG(gnupghome=GNUPGHOME)
@@ -155,7 +176,3 @@ class Varstack:
 
         decrypted_string =  gpg.decrypt(encrypted_string)
         return yaml.safe_load(decrypted_string.data)
-
-
-
-
