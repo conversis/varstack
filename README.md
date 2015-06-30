@@ -193,3 +193,38 @@ users:
 
 As you can see the 'users' hash was merged this time while now the 'repos' array/list only contains the entry from the node file.
 
+
+
+You can althoug work with encrypted dicts. If a value is PGP encrypted, varstack can decrypt this value if it is encrypted with one of your public keys.
+
+```
+---
+enc_data: |
+  -----BEGIN PGP MESSAGE-----
+  
+  P1eDjfxWvGFIkKpzgZi7rafqsGSlhXUDvTIcXoopCMABZkycUWQw99TM8QlXrk44
+  Svk7CUar...                 ...40aAfYwYS49T7PyfuPnQ0zVVieVjvNO+2
+  /eQU3e+ipxKRND8UtSf9jvBIXDcqQUkuubAPHV7WHswb2OoaPm3QFLraPaXoxPR1
+  VLglxg==
+  =+fch
+  -----END PGP MESSAGE-----
+```
+
+**Importent!** For this feature you have to install python-gnupg
+
+```
+pip install python-gnupg
+```
+
+Packageinfo :[https://pythonhosted.org/python-gnupg/](https://pythonhosted.org/python-gnupg/)
+
+Inside this encrypted value, dicts and lists can exist. This will be parsed through varstack, too.
+
+**Importent!** encrypted values can not be nested, so you can not encrypt a dict, put it in another dict and encrypt this.
+=> Only the lasted cipher will be decrypted.
+
+The default gnupgdir is '_$HOME/.gnupg_'. If you want to chose another path, put _gnupghome: PATH_TO_GNUPG_FOLDER_ inside your varstack.yaml config file
+
+
+
+

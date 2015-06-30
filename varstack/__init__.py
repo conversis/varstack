@@ -22,7 +22,8 @@ class Varstack:
         self.log = logging.getLogger(__name__)
         self.log.addHandler(NullHandler())
         self.data = {}
-        self.config = {'gnupghome':''}
+        self.config = {'gnupghome':os.environ['HOME']+'/.gnupg'} #standard path
+
 
     """Evaluate a stack of configuration files."""
     def evaluate(self, variables):
@@ -144,34 +145,19 @@ class Varstack:
 
     """Check if a value is encrypted"""
     def __check_enc(self, value):
-        pgp_string = '---BEGIN PGP MESSAGE---'
-        if value.index(pgp_string) == 0:
+        if str(value).find('-----BEGIN PGP MESSAGE-----') == 0:
             value = self.__decrypt_value(value)
         return value
 
-    GNUPGHOME = ''
 
-    """Initialize the directory of the gnupg keys for the gnupg modul"""
-    def __init_gnupghome(self):
-        if self.config['gnupghome']:
-            GNUPGHOME = self.config['gnupghome']
-        elif os.path.dirname('~/.gpg'):
-            GNUPGHOME = '~/.gpg'
-        elif os.path.dirname('~/.gnupg'):
-            GNUPGHOME = '~/.gnupg'
-        else:
-            self.log.warning('no gnupghome, can not decrypt values')
-        return
-
-    """Try to dectryp an encrypted value"""
+    """Try to dectrypt a value"""
     def __decrypt_value(self, encrypted_string):
-        if not GNUPGHOME:
-            self.__init_gnupghome()
-        if not GNUPGHOME: #if init GNUPGHOME gives no result, decryption is not possible
+        if not os.path.isdir(self.config['gnupghome']): #if GNUPGHOME gives no result, decryption is not possible
             return encrypted_string
 
         import gnupg
-        gpg = gnupg.GPG(gnupghome=GNUPGHOME)
+
+        gpg = gnupg.GPG(gnupghome=self.config['gnupghome'])
         gpg.encoding = 'utf-8'
 
         decrypted_string =  gpg.decrypt(encrypted_string)
