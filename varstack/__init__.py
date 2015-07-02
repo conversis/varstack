@@ -97,7 +97,7 @@ class Varstack:
     """Load a YAML files and merge it into the existing configuration."""
     def __loadFile(self, filehandle):
         data = yaml.safe_load(filehandle)
-        self.data = self.__mergeData(self.data, data, 'merge', '<root>')
+        self.data = self.__mergeData(self.data, data, 'merge', '<root>')    
 
     """Merge two configuration sets."""
     def __mergeData(self, old, new, combine, keyname):
@@ -147,6 +147,13 @@ class Varstack:
     def __check_enc(self, value):
         if str(value).find('-----BEGIN PGP MESSAGE-----') == 0:
             value = self.__decrypt_value(value)
+        if type(value) == dict:
+            for key in value:
+                value[key] = self.__check_enc(value[key])
+        if type(value) == list:
+            for item in value:
+                item = self.__check_enc(item)
+
         return value
 
 
