@@ -145,7 +145,7 @@ class Varstack:
 
     """Check if a value is encrypted"""
     def __check_enc(self, value):
-        if str(value).find('-----BEGIN PGP MESSAGE-----') == 0:
+        if type(value) is str and value.find('-----BEGIN PGP MESSAGE-----') == 0:
             value = self.__decrypt_value(value)
         if type(value) == dict:
             for key in value:
