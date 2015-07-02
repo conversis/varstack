@@ -220,9 +220,6 @@ Packageinfo :[https://pythonhosted.org/python-gnupg/](https://pythonhosted.org/p
 
 Inside this encrypted value, dicts and lists can exist. This will be parsed through varstack, too.
 
-**Importent!** encrypted values can not be nested, so you can not encrypt a dict, put it in another dict and encrypt this.
-=> Only the lasted cipher will be decrypted.
-
 The default gnupgdir is '_$HOME/.gnupg_'. If you want to chose another path, put _gnupghome: PATH_TO_GNUPG_FOLDER_ inside your varstack.yaml config file
 
 
