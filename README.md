@@ -195,7 +195,7 @@ As you can see the 'users' hash was merged this time while now the 'repos' array
 
 
 
-You can althoug work with encrypted dicts. If a value is PGP encrypted, varstack can decrypt this value if it is encrypted with one of your public keys.
+You can also work with encrypted dicts. If a value is PGP encrypted, varstack can decrypt this value if it is encrypted with one of your public keys.
 
 ```
 ---
@@ -216,7 +216,7 @@ enc_data: |
 pip install python-gnupg
 ```
 
-Packageinfo :[https://pythonhosted.org/python-gnupg/](https://pythonhosted.org/python-gnupg/)
+Packageinfo: [https://pythonhosted.org/python-gnupg/](https://pythonhosted.org/python-gnupg/)
 
 Inside this encrypted value, dicts and lists can exist. This will be parsed through varstack, too.
 
