@@ -16,13 +16,17 @@ except ImportError:
             pass
 
 class Varstack:
-    def __init__(self, config_filename='/etc/varstack.yaml'):
+    def __init__(self, config_filename='/etc/varstack.yaml', config={}):
         self.config_filename = config_filename
         self.valid_combine = ['merge', 'replace']
         self.log = logging.getLogger(__name__)
         self.log.addHandler(NullHandler())
         self.data = {}
-        self.config = {'gnupghome':os.environ['HOME']+'/.gnupg'}
+        self.config = config
+        if not 'gnupghome' in self.config:
+            self.config['gnupghome'] = os.environ['HOME']+'/.gnupg'
+        if not 'datadir' in self.config:
+            self.config['datadir'] = os.path.dirname(self.config_filename)+'/stack/'
 
     """Evaluate a stack of configuration files."""
     def evaluate(self, variables):
@@ -100,8 +104,7 @@ class Varstack:
 
     """Merge two configuration sets."""
     def __mergeData(self, old, new, combine, keyname):
-        for key in new:
-            new[key] = self.__check_enc(new[key])
+        new = self.__check_enc(new)
 
         if type(old) != type(new):
             self.log.error('key "{0}": previous type is {1} but new type is {2}.'.format(keyname, type(old).__name__, type(new).__name__))
@@ -144,6 +147,7 @@ class Varstack:
     """Check if value is encrypted"""
     def __check_enc(self, value):
         if type(value) is str and value.find('-----BEGIN PGP MESSAGE-----') == 0:
+            self.log.info('found an encrypted string, decrypting it')
             value = self.__decrypt_value(value)
         if type(value) == dict:
             for key in value:
@@ -157,13 +161,17 @@ class Varstack:
 
     """Try to dectrypt encrypted_string"""
     def __decrypt_value(self, encrypted_string):
-        if not os.path.isdir(self.config['gnupghome']):
+        try:
+            import gnupg
+            if not os.path.isdir(self.config['gnupghome']):
+                raise
+            gpg = gnupg.GPG(gnupghome=self.config['gnupghome'])
+            gpg.encoding = 'utf-8'
+
+            decrypted_string =  gpg.decrypt(encrypted_string)
+            if decrypted_string.data == '':
+                raise
+            return yaml.safe_load(decrypted_string.data)
+        except:
+            self.log.error('could not decrypt string. Using its encrypted representation.')
             return encrypted_string
-
-        import gnupg
-
-        gpg = gnupg.GPG(gnupghome=self.config['gnupghome'])
-        gpg.encoding = 'utf-8'
-
-        decrypted_string =  gpg.decrypt(encrypted_string)
-        return yaml.safe_load(decrypted_string.data)

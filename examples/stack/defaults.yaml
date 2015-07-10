@@ -1,2 +1,8 @@
 ---
 test: 123
+an_array:
+  - entry1
+  - entry2
+a_dict:
+  key1: a_string
+  key2: foo
