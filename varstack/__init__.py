@@ -22,8 +22,7 @@ class Varstack:
         self.log = logging.getLogger(__name__)
         self.log.addHandler(NullHandler())
         self.data = {}
-        self.config = {'gnupghome':os.environ['HOME']+'/.gnupg'} #standard path
-
+        self.config = {'gnupghome':os.environ['HOME']+'/.gnupg'}
 
     """Evaluate a stack of configuration files."""
     def evaluate(self, variables):
@@ -97,7 +96,7 @@ class Varstack:
     """Load a YAML files and merge it into the existing configuration."""
     def __loadFile(self, filehandle):
         data = yaml.safe_load(filehandle)
-        self.data = self.__mergeData(self.data, data, 'merge', '<root>')    
+        self.data = self.__mergeData(self.data, data, 'merge', '<root>')
 
     """Merge two configuration sets."""
     def __mergeData(self, old, new, combine, keyname):
@@ -107,7 +106,6 @@ class Varstack:
         if type(old) != type(new):
             self.log.error('key "{0}": previous type is {1} but new type is {2}.'.format(keyname, type(old).__name__, type(new).__name__))
             return False
-        #self.log.debug('processing key "{0}"'.format(keyname))
         if type(new) == dict:
             if '__combine' in new:
                 if new['__combine'] in self.valid_combine:
@@ -143,7 +141,7 @@ class Varstack:
         else:
             return new
 
-    """Check if a value is encrypted"""
+    """Check if value is encrypted"""
     def __check_enc(self, value):
         if type(value) is str and value.find('-----BEGIN PGP MESSAGE-----') == 0:
             value = self.__decrypt_value(value)
@@ -157,9 +155,9 @@ class Varstack:
         return value
 
 
-    """Try to dectrypt a value"""
+    """Try to dectrypt encrypted_string"""
     def __decrypt_value(self, encrypted_string):
-        if not os.path.isdir(self.config['gnupghome']): #if GNUPGHOME gives no result, decryption is not possible
+        if not os.path.isdir(self.config['gnupghome']):
             return encrypted_string
 
         import gnupg
