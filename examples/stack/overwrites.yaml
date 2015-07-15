@@ -1,0 +1,8 @@
+---
+test: 123
+an_array:
+  - entry3
+a_dict:
+  __combine: replace
+  key1: another_string
+  key3: yet_another_string

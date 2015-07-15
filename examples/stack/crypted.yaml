@@ -1,0 +1,92 @@
+encrypted_string: |
+  -----BEGIN PGP MESSAGE-----
+  Comment: GPGTools - https://gpgtools.org
+
+  hQEMA48F+mvaRh1fAQf/Ul9aZDh7E37VfM96FjFzfTBaPziCisH0VpKkiyXMulNv
+  Nd2hog9Djy46TtBhnkFZOkhZi6K9os1Etvr60MidPZ3g50QV82WXymwKXc7hxbzS
+  9SllS1LL2Hz5uVmeWVTiTrhz47Lm9ORo31KQl/a1f4wkroSkkh1JIbTujm43eQp5
+  BYJ6fUhfaYx5O6+RAaBadfY0XZHi24Vq8Qlj6Rh2KNh4M8lKrlYCp7GZ0E9aORE7
+  yOj5lB40d+g4sWpojXqdjnfEDlQzAaxjN4d8KpHpxf+7Bd5OEyQ+q0D4ytvSVJ19
+  kpo6DulZQBOYERgbogabWOr5Vb+cXwrWQu6jzQyLZtJOAZ2Gb2AhfkzWple+3cTI
+  Qzy9g9hjyZUP3iQj494A5tDgFeBSqNneRbNWYDmjPEv9oOlvAJKXlZCM6wAn8joj
+  aNra4Vgzc1xEfLq+3RGU
+  =yaTT
+  -----END PGP MESSAGE-----
+unencrypted_string: very secret string
+
+encrypted_yaml_list: |
+  -----BEGIN PGP MESSAGE-----
+  Comment: GPGTools - https://gpgtools.org
+
+  hQEMA48F+mvaRh1fAQgAi2hs7LsLaPmRcyP6L5hqkNCwFyJNK404UmikxDlRAo8W
+  tA3+DLKQgJ8fTKQ88npjQnYb2kW/3XFE9ubRnopMA7lypIiEx0vSgV+XWVGMNGFk
+  DdQCGc6mnd796Dd0k3BsW29Ceu4JByTwHPiKkN2Xweo+EthhfCQO9vE4f1sOM/tB
+  ZmQGGrDmtMw0E/khVLhLETRgNzUQFM4UfGYbQOscnQgiF4v4ef4X4ISzYK+xqVWA
+  i7K9CKoWgCxn+Y3yEjGSw1pT92oHB+VPMZqyAllRS/DVYU8db5OHOhODrku7Z4Ly
+  IN376cLZDHNZcyyLie2NcLSy04Hfpi1IlMCKW/QoKdJJAZ/rbKqrdrHI37pJ+21o
+  wzpHQDtg3meco+tigoJvNSvIMP7ujS8oKDRLaWU46SXs1MIjJvkbwybOwlzQL6GA
+  RvMk713Q0ylg9Q==
+  =HJoH
+  -----END PGP MESSAGE-----
+unencrypted_yaml_list:
+  - foo
+  - bar
+  - baz
+
+nested_encrytion: |
+  -----BEGIN PGP MESSAGE-----
+  Comment: GPGTools - https://gpgtools.org
+
+  hQEMA48F+mvaRh1fAQf/ZajqBo5D9xdQX1bI0JceNyzXj8pZV3TIxLdmSDytJVLy
+  +RxyHNVnITO8AY3GfoZNPoanwCzcNkO7EAqnay+P+wi/rL6FFr7SLsDhcUxIg8de
+  td621hiUl3+Ig6kCxJdFFB6HT/KxLdpziTJO90XJ4uecwlqDICVEpIwYT6DNHVVV
+  hmeYFftPyXBbSyHl0OxiC5LvgSMlSR5nQ1IoN8gN1vNeOSlh1qT2ACfMLGH3uqJr
+  qL0vKi+o2eXdpQYFSQOt71cdHqDlMTJZ5cJfSBvGS1Ow/aXdI+VEKXEw+mdJ7ggD
+  yQUcHjCPCQbFBfZ+nEONM3l2yyarFDxjJZmYrLdb89LpASy7Tlmnq5v1xy+HrW0O
+  K/8oHB2oXYkBh8YQTj0/ZCz47G6EET0g7q81D+H7yAz5jiBxdNVt43DPZ79YYa0g
+  z8JyhN6k5zpgYFwMZJ71FCWa+Ve/MFhBaFj8WnEApe6SyThdlTXnvKmUQJHAx1re
+  VTHAon8K6EOHobl1dFR/neL8dSHMONx4GkU+gESVPJU//bOvHqUgESO5b5/BSo6e
+  oSOpWsEM/wBNEf6fbevJ7EXDEssDhHNcb8ZOB+E5Qya7AgQTIq3RW82Y0QEH9W+z
+  +SmltF2lpbYehihXMY7sDiEGvoPHHeU1dCKrdW9sG5P/hJqx/yptdfbaeMmebMZQ
+  hFpMaXTX21g76c7SVdeKPFX+fimXaxOYxKzFTzfw3CuKm43ki6s1Ush4juUfuNJk
+  zkQYrVIIsiVcpHpGM4HDA5Pc4NHOr1DDXufA1sSgwDtoEoao33duCfYdKS/z6mec
+  PUKZ0+wBbAzdhJmdi8BKTnQp9Uw51+4E8sHJ9doQc3It7JRojNOsL8he+PxOWLni
+  DD+lzC2WadQvGhOmavdSQI3U0cSkU48gHWPgzDYICf8JoxReYc9kogs8oyFz5UCN
+  Pucvfnp7nu6KFoQ+k8YLGhF9EivboGFsATcWehqhOVUpQx4/kZSEAbdsQ33SUBC6
+  q9txaUo5cY9D3KF9Cx3iq/86guY9MwrkMwbpeS2espEr+iQ2Uz1ORFL96yTr+kiC
+  nBfSniK1G8cKB2PySE5AwUbtNxy5Bzf9/WEz5Q==
+  =VGJx
+  -----END PGP MESSAGE-----
+# unencrypted_nested_encrytion:
+#   encrypted_hash:
+#     foo: "foo"
+#     bar: "bar"
+#     baz: |
+#       -----BEGIN PGP MESSAGE-----
+#       Comment: GPGTools - https://gpgtools.org
+
+#       hQEMA48F+mvaRh1fAQf+IUdyGSkdpH1glv8EPwBx4WoNgiSwloW9oXnSj4Yragm1
+#       agsA/I0zT9jaoozMcq0tDXfLMoh/BlkvVtmkWXntLhEILSloxEh1QlEJqDS0dIu1
+#       PLwNLRLsVMESbY6Hr9VikzDkAx/bptNSKIyQbU4ftsRnlGlZ+o4FKoI4/XzZ4H1j
+#       C4fHlwPvTiKPvs+I+jtiEGc55gDS3+Woefjeq9A0P5rd1VQpIzzSWX/jFxDGT9qw
+#       HfQWLAZBAzZiLEKmMb/eeS/fuDGY1rM9E662yUkV2m4ll2xfHhZ4+HVRsDUsj8qv
+#       4kMOhO8lXEImR+RcenrTK4V5EddkV2Z0inFujWnMgdI+AV1TWOVlXxOu/ADgvSad
+#       IfeQ9saldNd8vEZyMU26oUxq6XUF8GeiaFjoCz+pIR0qgsTbkqJc5HAQxrQdDRA=
+#       =qLBT
+#       -----END PGP MESSAGE-----
+#     uncrypted_baz: 42
+
+secret_that_was_encrypted_with_another_key: |
+  -----BEGIN PGP MESSAGE-----
+  Comment: GPGTools - https://gpgtools.org
+
+  hQEMA13m7v6OIAfuAQf5AVyqHsxeOZEH893mF3tY1D6+baAzM3Oj9YbtoRUuesh+
+  F67R4WL5l/g45XFVxeDCelqoiRZc+NwSAcORyqUkJeClxwQq267TPThyVLlWUZLs
+  uV+4Rd4PR/52wFHZ0KnPKUTDi+7QNjOM0vLGb9o3wzR6r+yvq2Mw+D5fGaeRpxfr
+  NqgXLoZmYMABX+OD88P0XdbQapMHs8eNDo1o7MlnDEmxJyBpgJE0Ch+BFY+oc2Tf
+  hLjAhdIMF9fT/yNNs8KAD2V4riBBQdbOVhggSna+Gb+pKWbnwBXtOPvbxeIgWYTy
+  3Cjb/IAqfi+Uwc8Rwmw5CM9fCtjZDqwSgDvCurpVu9I+AYZoP3Uv+mfSOjfn4K6e
+  wUjRzTkIxejmiK5xDHCTZFArT2dVW0h9aW9WLy0EQ8Ew5YLUv/BnZF+ChTmSLFk=
+  =v5wB
+  -----END PGP MESSAGE-----
+

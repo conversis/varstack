@@ -5,7 +5,7 @@ Varstack - A system to create stacked configuration structures
 
 __all__ = [ "Varstack" ]
 
-import logging, re, yaml
+import logging, re, yaml, os
 from pprint import pprint
 
 try:
@@ -16,12 +16,17 @@ except ImportError:
             pass
 
 class Varstack:
-    def __init__(self, config_filename='/etc/varstack.yaml'):
+    def __init__(self, config_filename='/etc/varstack.yaml', config={}):
         self.config_filename = config_filename
         self.valid_combine = ['merge', 'replace']
         self.log = logging.getLogger(__name__)
         self.log.addHandler(NullHandler())
         self.data = {}
+        self.config = config
+        if not 'gnupghome' in self.config:
+            self.config['gnupghome'] = os.environ['HOME']+'/.gnupg'
+        if not 'datadir' in self.config:
+            self.config['datadir'] = os.path.dirname(self.config_filename)+'/stack/'
 
     """Evaluate a stack of configuration files."""
     def evaluate(self, variables):
@@ -30,10 +35,10 @@ class Varstack:
         except (OSError, IOError) as e:
             self.log.error('Unable to load configuration file "{0}"'.format(self.config_filename))
             return {}
-        config = yaml.safe_load(cfh)
+        self.config.update(yaml.safe_load(cfh))
         cfh.close()
-        for path in config['stack']:
-            fullpaths = self.__substitutePathVariables(config['datadir']+'/'+path+'.yaml', variables)
+        for path in self.config['stack']:
+            fullpaths = self.__substitutePathVariables(self.config['datadir']+'/'+path+'.yaml', variables)
             if not fullpaths:
                 continue
             for fullpath in fullpaths:
@@ -99,10 +104,11 @@ class Varstack:
 
     """Merge two configuration sets."""
     def __mergeData(self, old, new, combine, keyname):
+        new = self.__check_enc(new)
+
         if type(old) != type(new):
             self.log.error('key "{0}": previous type is {1} but new type is {2}.'.format(keyname, type(old).__name__, type(new).__name__))
             return False
-        #self.log.debug('processing key "{0}"'.format(keyname))
         if type(new) == dict:
             if '__combine' in new:
                 if new['__combine'] in self.valid_combine:
@@ -137,3 +143,35 @@ class Varstack:
                 return old+new
         else:
             return new
+
+    """Check if value is encrypted"""
+    def __check_enc(self, value):
+        if type(value) is str and value.find('-----BEGIN PGP MESSAGE-----') == 0:
+            self.log.info('found an encrypted string, decrypting it')
+            value = self.__decrypt_value(value)
+        if type(value) == dict:
+            for key in value:
+                value[key] = self.__check_enc(value[key])
+        if type(value) == list:
+            for item in value:
+                item = self.__check_enc(item)
+
+        return value
+
+
+    """Try to dectrypt encrypted_string"""
+    def __decrypt_value(self, encrypted_string):
+        try:
+            import gnupg
+            if not os.path.isdir(self.config['gnupghome']):
+                raise
+            gpg = gnupg.GPG(gnupghome=self.config['gnupghome'])
+            gpg.encoding = 'utf-8'
+
+            decrypted_string =  gpg.decrypt(encrypted_string)
+            if decrypted_string.data == '':
+                raise
+            return yaml.safe_load(decrypted_string.data)
+        except:
+            self.log.error('could not decrypt string. Using its encrypted representation.')
+            return encrypted_string
