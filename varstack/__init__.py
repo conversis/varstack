@@ -24,7 +24,10 @@ class Varstack:
         self.data = {}
         self.config = config
         if not 'gnupghome' in self.config:
-            self.config['gnupghome'] = os.environ['HOME']+'/.gnupg'
+            if 'HOME' in os.environ:
+                self.config['gnupghome'] = os.environ['HOME']+'/.gnupg'
+            elif 'PWD' in os.environ:
+                self.config['gnupghome'] = os.environ['PWD']+'/.gnupg'
         if not 'datadir' in self.config:
             self.config['datadir'] = os.path.dirname(self.config_filename)+'/stack/'
 
