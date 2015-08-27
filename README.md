@@ -223,5 +223,7 @@ Inside this encrypted value, dicts and lists can exist. This will be parsed thro
 The default gnupgdir is '_$HOME/.gnupg_'. If you want to chose another path, put _gnupghome: PATH_TO_GNUPG_FOLDER_ inside your varstack.yaml config file
 
 
-
-
+## Running development tests
+```
+nosetests test/
+```
