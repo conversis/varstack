@@ -193,9 +193,11 @@ users:
 
 As you can see the 'users' hash was merged this time while now the 'repos' array/list only contains the entry from the node file.
 
+## GPG encryption for stacked data
+You can also work with encrypted data. If a value is PGP encrypted, varstack can decrypt this value (given the private key is available) and the result is itself interpreted as YAML. This means that the encrypted data can be nested but also keep in mind that for any other structe than single-line strings / integers, a proper yaml must be constructed before encryption!
 
-
-You can also work with encrypted dicts. If a value is PGP encrypted, varstack can decrypt this value if it is encrypted with one of your public keys.
+### Examples
+`cat "|\n  first line\n  second line\n\n" | *gpg encryption*` instead of just encrypting the multi-line string.
 
 ```
 ---
@@ -210,6 +212,8 @@ enc_data: |
   -----END PGP MESSAGE-----
 ```
 
+*please see `examples/` for more examples.*
+
 **Importent!** For this feature you have to install python-gnupg
 
 ```
@@ -223,5 +227,7 @@ Inside this encrypted value, dicts and lists can exist. This will be parsed thro
 The default gnupgdir is '_$HOME/.gnupg_'. If you want to chose another path, put _gnupghome: PATH_TO_GNUPG_FOLDER_ inside your varstack.yaml config file
 
 
-
-
+## Running development tests
+```
+nosetests test/
+```

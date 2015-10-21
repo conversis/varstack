@@ -54,6 +54,10 @@ class TestVarstackWithCrypto(object):
         assert_equal(self.evaluated['unencrypted_string'], self.evaluated['encrypted_string'])
         assert_is_instance(self.evaluated['encrypted_string'], str)
 
+    def test_evaluate_with_encrypted_multiline_string(self):
+        assert_equal(self.evaluated['unencrypted_multiline_string'], self.evaluated['encrypted_multiline_string'])
+        assert_is_instance(self.evaluated['encrypted_multiline_string'], str)
+
     def test_evaluate_with_encrypted_list(self):
         assert_equal(self.evaluated['unencrypted_yaml_list'], self.evaluated['encrypted_yaml_list'])
         assert_is_instance(self.evaluated['encrypted_yaml_list'], list)

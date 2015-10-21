@@ -14,6 +14,25 @@ encrypted_string: |
   -----END PGP MESSAGE-----
 unencrypted_string: very secret string
 
+encrypted_multiline_string: |
+  -----BEGIN PGP MESSAGE-----
+  Comment: GPGTools - https://gpgtools.org
+
+  hQEMA48F+mvaRh1fAQgAul50sNNI+v4N+lFi6+4RN76whxIp3Y0xurmTmthF3jEg
+  zXLMG6xRegcit0820PpYQh6Uh12HUU3TpdFlOTSs7up7h6UC5RxYiV2nkX9sPILY
+  hM2ZNnUxtCmgATA+laCRBCVh+T52kdNS3XUieJTg64abZDBcegD+LLWZAj1dd6sT
+  UnyiG6FQcgmJJ5192ftp3V4IG9/mUTqfWeMOen0wSA8QryHPapuWBP1FJZEnoyio
+  lWKVFVtGbG9uMRJQbY77juNgu/LrIYmoxygX1JqaaCt4ry4wU0MBWMlhOr8bCc66
+  A/tjjKxDyqvDNu30uyvYqaV/1gMz1igT6BIIUNnQFdJYASFygD5Xaj1Ya4Ib1qOt
+  WkuB1i/OuVf1oHgU64gmohH7gXlbSKDy3aNfFFzukXJnzLg9oichZ0+dgT/MK34d
+  xEunhHbmwFagJ3WDLEoAsMA28NaUlGTZoA==
+  =cY94
+  -----END PGP MESSAGE-----
+unencrypted_multiline_string: |
+  first line
+  second line
+  last line
+
 encrypted_yaml_list: |
   -----BEGIN PGP MESSAGE-----
   Comment: GPGTools - https://gpgtools.org
