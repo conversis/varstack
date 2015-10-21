@@ -32,7 +32,9 @@ class Varstack:
             self.config['datadir'] = os.path.dirname(self.config_filename)+'/stack/'
 
     """Evaluate a stack of configuration files."""
-    def evaluate(self, variables):
+    def evaluate(self, variables, init_data=None):
+        if init_data:
+            self.data = init_data
         try:
             cfh = open(self.config_filename, 'r')
         except (OSError, IOError) as e:
@@ -61,16 +63,24 @@ class Varstack:
         new_paths = [path]
         tags = self.__extractVarNames(path)
         for tag in tags:
-            if tag not in variables:
-                self.log.warning('Unknown variable "{0}" in path "{1}", skipping'.format(tag, path))
-                return False
+            tagparts = tag.split(':')
+            pointer = variables
+            for tagpart in tagparts:
+                if tagpart not in pointer:
+                    self.log.warning('No value for variable "%{{{0}}}" found in path "{1}", skipping'.format(tag, path))
+                    return False
+                pointer = pointer[tagpart]
+            tagvalue = pointer
             multi = []
             for idx, value in enumerate(new_paths):
-                if type(variables[tag]) is list:
-                    for entry in variables[tag]:
+                if type(tagvalue) is dict:
+                    self.log.warning('Value of variable "%{{{0}}}" in path "{1}" is a dictionary which is not allowed, skipping'.format(tag, path))
+                    return False
+                if type(tagvalue) is list:
+                    for entry in tagvalue:
                        multi.append(re.sub('%\{'+tag+'\}', entry, new_paths[idx]))
                 else:
-                    multi.append(re.sub('%\{'+tag+'\}', variables[tag], new_paths[idx]))
+                    multi.append(re.sub('%\{'+tag+'\}', tagvalue, new_paths[idx]))
             new_paths = multi
         return new_paths
 
