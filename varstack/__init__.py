@@ -18,7 +18,7 @@ except ImportError:
 class Varstack:
     def __init__(self, config_filename='/etc/varstack.yaml', config={}):
         self.config_filename = config_filename
-        self.valid_combine = ['merge', 'replace']
+        self.valid_combine = ['merge', 'replace', 'remove']
         self.log = logging.getLogger(__name__)
         self.log.addHandler(NullHandler())
         self.data = {}
@@ -132,6 +132,9 @@ class Varstack:
             if combine == 'replace':
                 self.log.debug('replacing dict {0}'.format(keyname))
                 return new
+            elif combine == 'remove':
+                self.log.debug('removing dict {0}'.format(keyname))
+                return False
             else:
                 self.log.debug('merging dict {0}'.format(keyname))
                 for key in new:
@@ -139,7 +142,11 @@ class Varstack:
                         self.log.debug('adding new key "{0}".'.format(keyname+'/'+key))
                         old[key] = new[key]
                     else:
-                        old[key] = self.__mergeData(old[key], new[key], combine, keyname+'/'+key)
+                        res = self.__mergeData(old[key], new[key], combine, keyname+'/'+key)
+                        if not res:
+                            old.pop(key, None)
+                        else:
+                            old[key] = res
                 return old
         elif type(new) == list:
             if type(new[0]) == dict and '__combine' in new[0]:
